@@ -1,11 +1,12 @@
 <?php
-include 'includes/DatabaseConnection.php';
+require '../includes/DatabaseConnection.php';
 
 $sql = "
 SELECT 
     q.id,
     q.text,
     q.date,
+    q.imagePath,
     u.name AS username,
     u.email AS useremail,
     m.name AS modulename
@@ -15,12 +16,12 @@ LEFT JOIN module m ON q.moduleID = m.id
 ORDER BY q.date DESC, q.id DESC
 ";
 
-$questions = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+$questions = $pdo->query($sql)->fetchAll();
 
 $title = "Question List";
 
 ob_start();
-include 'templates/CW.html.php';
+require '../templates/CW.html.php';
 $output = ob_get_clean();
-include 'templates/layout.html.php';
-?>
+
+require '../templates/layout.html.php';
