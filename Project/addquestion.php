@@ -1,5 +1,5 @@
 <?php
-require '../includes/DatabaseConnection.php';
+require '../includes/init.php';
 
 $users   = $pdo->query("SELECT id, name FROM user ORDER BY name")->fetchAll();
 $modules = $pdo->query("SELECT id, name FROM module ORDER BY name")->fetchAll();

@@ -1,5 +1,5 @@
 <?php
-require '../includes/DatabaseConnection.php';
+require '../includes/init.php';
 
 $id = $_GET['id'] ?? null;
 if (!$id) {

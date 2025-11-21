@@ -1,5 +1,5 @@
 <?php
-require '../includes/DatabaseConnection.php';
+require '../includes/init.php';
 
 $sql = "
 SELECT 

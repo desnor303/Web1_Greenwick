@@ -1,5 +1,10 @@
 <?php
-require '../includes/DatabaseConnection.php';
+require '../includes/init.php';
+
+if (empty($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: login.php');
+    exit;
+}
 
 $errors = [];
 $name  = '';

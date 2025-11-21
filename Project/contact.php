@@ -1,5 +1,5 @@
 <?php
-require '../includes/DatabaseConnection.php'; // không bắt buộc, nhưng cứ include cho thống nhất
+require '../includes/init.php';
 
 $errors = [];
 $success = false;
@@ -29,26 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        // 2 lựa chọn:
-        // 1) Gửi email thật (nếu server cấu hình mail())
-        // 2) Ghi vào file log (an toàn cho localhost)
-        
-        // Ví dụ: ghi log
-        $logLine = sprintf(
-            "[%s] From: %s <%s> | Subject: %s | Message: %s\n",
-            date('Y-m-d H:i:s'),
-            $name,
-            $email,
-            $subject,
-            str_replace(["\r", "\n"], ' ', $message)
-        );
-        file_put_contents('contact_messages.log', $logLine, FILE_APPEND);
-
-        // Nếu muốn dùng mail():
-        // @mail('admin@example.com', $subject, $message, "From: $email");
+        $sql = "INSERT INTO contact_message
+                    (name, email, subject, message, created_at)
+                VALUES
+                    (:name, :email, :subject, :message, NOW())";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':name'    => $name,
+            ':email'   => $email,
+            ':subject' => $subject,
+            ':message' => $message
+        ]);
 
         $success = true;
-        // clear form
         $name = $email = $subject = $message = '';
     }
 }
